@@ -1,0 +1,6 @@
+
+{% extends "base.html" %}{% block title %}Dashboard • PDF2Word Pro{% endblock %}
+{% block content %}<main><section class="hero left"><span>ACCOUNT</span><h1>Your dashboard</h1><p>{{user.email}}</p></section>
+<section class="stats"><div><small>Credits</small><strong>{{user.credits}}</strong></div><div><small>Plan</small><strong>Free</strong></div><div><small>Jobs</small><strong>{{jobs|length}}</strong></div></section>
+<section class="card"><h2>Conversion history</h2>{% if jobs %}<div class="table">{% for j in jobs %}<div><b>{{j.filename}}</b><span>{{j.pages}} pages • {{j.mode}} • {{j.status}}</span></div>{% endfor %}</div>{% else %}<p class="muted">No conversions yet.</p>{% endif %}</section>
+<section class="upgrade"><h2>Need more conversions?</h2><p>Paid credits and subscriptions are the next billing integration.</p><a class="button" href="/pricing">View plans</a></section></main>{% endblock %}

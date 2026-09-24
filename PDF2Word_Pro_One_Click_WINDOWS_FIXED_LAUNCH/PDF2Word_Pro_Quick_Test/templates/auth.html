@@ -1,0 +1,7 @@
+
+{% extends "base.html" %}{% block title %}{{"Create account" if mode=="register" else "Login"}} • PDF2Word Pro{% endblock %}
+{% block content %}<main class="auth"><section class="card"><h1>{{"Create your account" if mode=="register" else "Welcome back"}}</h1><p class="muted">{{"Get free conversion credits." if mode=="register" else "Continue converting your PDFs."}}</p>
+<form id="auth"><input name="email" type="email" placeholder="Email" required><input name="password" type="password" placeholder="Password (8+ characters)" minlength="8" required><button>{{"Create account" if mode=="register" else "Login"}}</button><div id="status"></div></form>
+<p>{% if mode=="register" %}Already have an account? <a href="/login">Login</a>{% else %}New here? <a href="/register">Create an account</a>{% endif %}</p></section></main>
+<script>document.querySelector('#auth').onsubmit=async e=>{e.preventDefault();let r=await fetch('/api/{{mode}}',{method:'POST',body:new FormData(e.target)}),j=await r.json();if(r.ok)location='/dashboard';else document.querySelector('#status').textContent=j.error}</script>
+{% endblock %}

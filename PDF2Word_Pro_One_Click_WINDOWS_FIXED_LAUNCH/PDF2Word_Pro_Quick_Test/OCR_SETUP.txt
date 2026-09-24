@@ -1,0 +1,11 @@
+PDF2Word Pro OCR test
+======================
+
+OCR needs Tesseract installed on Windows.
+
+If START.bat says:
+    OCR: Tesseract NOT detected
+
+Install Tesseract for Windows, then close and run START.bat again.
+
+Normal/digital PDF -> Word conversion does NOT require Tesseract.

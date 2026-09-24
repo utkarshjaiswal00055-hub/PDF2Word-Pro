@@ -1,0 +1,12 @@
+PDF2Word Pro — Quick Start
+
+ONE TIME:
+Right-click SETUP_ONCE.ps1 -> Run with PowerShell.
+
+EVERY TIME AFTER THAT:
+Double-click PDF2Word Pro.lnk
+
+The shortcut starts the private virtual environment and opens:
+http://127.0.0.1:5000
+
+No START.bat is used.

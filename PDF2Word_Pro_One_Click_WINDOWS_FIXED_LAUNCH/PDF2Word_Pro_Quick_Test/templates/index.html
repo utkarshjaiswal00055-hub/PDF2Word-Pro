@@ -1,0 +1,16 @@
+
+{% extends "base.html" %}{% block content %}
+<main><section class="hero"><span>V7 • REAL PRODUCT FOUNDATION</span><h1>PDF to Word, built for a real business.</h1><p>Convert digital and scanned PDFs, track your conversions, manage credits and prepare for paid plans.</p></section>
+<section class="card">
+<div id="authmsg">{% if not user %}<div class="notice">Create a free account to convert documents.</div>{% endif %}</div>
+<label id="drop"><input id="file" type="file" accept=".pdf"><div class="uploadicon">↑</div><h2>Drop a PDF here</h2><p>or click to browse • up to 50 MB</p><strong id="name">No file selected</strong></label>
+<div id="info"></div><button id="go" disabled>{% if user %}Convert to Word{% else %}Login to Convert{% endif %}</button><div id="status"></div>
+</section>
+<section class="features"><article><b>OCR</b><h3>Scanned PDFs</h3><p>Detect and OCR image-based documents.</p></article><article><b>Accounts</b><h3>Conversion history</h3><p>Every job is recorded in your dashboard.</p></article><article><b>Credits</b><h3>Usage control</h3><p>Free credits are tracked per account.</p></article><article><b>Business</b><h3>Ready to monetize</h3><p>Pricing and payment integration points are prepared.</p></article></section></main>
+<script>
+const logged={{'true' if user else 'false'}}, f=document.querySelector('#file'),drop=document.querySelector('#drop'),go=document.querySelector('#go'),info=document.querySelector('#info'),status=document.querySelector('#status');let selected;
+async function inspect(x){let d=new FormData();d.append('file',x);let r=await fetch('/api/inspect',{method:'POST',body:d}),j=await r.json();if(!r.ok)throw Error(j.error);info.textContent=`${j.pages} pages • ${j.type.replaceAll('_',' ')} • ${j.image_pages} image pages`;go.disabled=!logged}
+f.onchange=()=>{selected=f.files[0];if(selected){document.querySelector('#name').textContent=selected.name;inspect(selected).catch(e=>status.textContent=e.message)}};
+drop.ondragover=e=>{e.preventDefault();drop.classList.add('drag')};drop.ondragleave=()=>drop.classList.remove('drag');drop.ondrop=e=>{e.preventDefault();drop.classList.remove('drag');selected=e.dataTransfer.files[0];if(selected){document.querySelector('#name').textContent=selected.name;inspect(selected).catch(x=>status.textContent=x.message)}};
+go.onclick=async()=>{if(!logged){location='/login';return}status.textContent='Converting…';go.disabled=true;let d=new FormData();d.append('file',selected);try{let r=await fetch('/api/convert',{method:'POST',body:d});if(!r.ok){let j=await r.json();throw Error(j.error)}let b=await r.blob(),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=selected.name.replace(/\.pdf$/i,'')+'.docx';a.click();URL.revokeObjectURL(u);status.textContent='Done — file downloaded. Refresh dashboard to see the job.'}catch(e){status.textContent=e.message}finally{go.disabled=false}}
+</script></main>{% endblock %}
